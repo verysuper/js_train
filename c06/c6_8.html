@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>List King</h1>
+    <h2>Buy Groceries <span id="counter">1</span></h2>
+    <ul id="list">
+        <li>fresh figs</li>
+    </ul>
+    <div class="button"><a href="/additem" class="add">Add list item</a></div>
+    <script>
+        var elList, addLink, newEl, newText, counter, listItems;//宣告變數
+        elList  = document.getElementById('list');//取得清單
+        addLink = document.querySelector('a');//取得新增項目按鈕的元件
+        counter = document.getElementById('counter');//取得選項計數器
+        function addItem(e){//宣告函式
+            e.preventDefault();//取超連結預設動作
+            newEl = document.createElement('li');//新增<li>元件
+            newText=document.createTextNode('New list item');//新增文字節點
+            newEl.appendChild(newText);//將文字加入<li>
+            elList.appendChild(newEl);//將<li>加入清單
+        }
+        function updateCount(){
+            listItems=list.getElementByTagName('li').length;//取得所有<li>總數
+            counter.innerHTML=listItems;
+        }
+    addLink.addEventListener('click', addItem, false);       // Click on button
+    elList.addEventListener('DOMNodeInserted', updateCount, false); // DOM updated
+    </script>
+</body>
+</html>
