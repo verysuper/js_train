@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        a[data-state='stop'] {background-image: url('pause.png');}
+        a[data-state='record'] {background-image: url('record.png');}
+        #buttons {
+        height: 100px;
+        width: 100px;
+        /* margin: 0 auto; */
+        }
+        #buttons a {
+        width: 100px;
+        height: 100px; 
+        text-indent: 100%;
+        margin-top: 20px;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;}
+    </style>
+</head>
+<body>
+    <div id="page">
+        <h1>List King</h1>
+        <h2 id="noteName">Audio Note</h2>
+        <form action="http://example.org/">
+          <label for="noteInput">Enter note name:</label>
+          <input type="text" id="noteInput" />
+          <div id="buttons">
+            <a data-state="record" href="">record</a>
+          </div>
+        </form>
+    </div>
+    <script>
+        var noteInput, noteName, textEntered, target;
+        noteName = document.getElementById('noteName');
+        noteInput = document.getElementById('noteInput');
+        function writeLabel(e) {
+            if (!e) {
+                e = window.event;
+            }
+            target = e.target || e.srcElement;
+            textEntered = target.value;                    // Value of that element
+            noteName.textContent = textEntered;            // Update note text
+        }
+        function recorderControls(e) {                   // Declare recorderControls()
+            if (!e) {                                      // If event object not present
+                e = window.event;                            // Use IE5-8 fallback
+            }
+            target = e.target || e.srcElement;             // Get the target element
+            if (e.preventDefault) {                        // If preventDefault() supported
+                e.preventDefault();                          // Stop default action
+            } else {                                       // Otherwise
+                e.returnValue = false;                       // IE fallback: stop default action
+            }
+
+            switch(target.getAttribute('data-state')) {    // Get the data-state attribute
+                case 'record':                               // If its value is record
+                record(target);                            // Call the record() function
+                break;                                     // Exit function to where called
+                case 'stop':                                 // If its value is stop
+                stop(target);                              // Call the stop() function
+                break;                                     // Exit function to where called
+                // More buttons could go here...
+            }
+        }
+
+        function record(target) {                        // Declare function
+            target.setAttribute('data-state', 'stop');     // Set data-state attr to stop
+            target.textContent = 'stop';                   // Set text to 'stop'
+        }
+
+        function stop(target) {
+            target.setAttribute('data-state', 'record');   //Set data-state attr to record
+            target.textContent = 'record';                 // Set text to 'record'
+        }
+        //_________________________________________________________________________
+        if (document.addEventListener) {                 // If event listener supported
+            document.addEventListener('click', function(e) {// For any click document
+                recorderControls(e);                         // Call recorderControls()
+            }, false);                                     // Capture during bubble phase
+            // If input event fires on noteInput input call writeLabel()
+            noteInput.addEventListener('input', writeLabel, false); 
+        } else {                                         // Otherwise
+            document.attachEvent('onclick', function(e) {  // IE fallback: any click
+                recorderControls(e);                         // Calls recorderControls()
+            });
+            // If keyup event fires on noteInput call writeLabel()
+            noteInput.attachEvent('onkeyup', writeLabel);
+        }        
+    </script>
+</body>
+</html>
